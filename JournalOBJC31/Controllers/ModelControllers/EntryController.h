@@ -7,10 +7,23 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Entry.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface EntryController : NSObject
+
+// Singleton
++ (EntryController *) shared;
+
+- (void)saveToPersistentStore;
+
+// var states = [Entry]()
+@property (nonatomic, copy) NSArray *entries;
+
+// CRUD
+- (void)addEntriesObject:(Entry *)entry;
+- (void)removeEntriesObject:(Entry *)entry;
 
 @end
 

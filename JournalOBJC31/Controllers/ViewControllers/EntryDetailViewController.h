@@ -7,10 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Entry.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface EntryDetailViewController : UIViewController
+
+#pragma mark - Properties
+@property (nonatomic) Entry *entryLanding;
+
+#pragma mark - Outlets
+@property (weak, nonatomic) IBOutlet UITextView *bodyTextView;
+@property (weak, nonatomic) IBOutlet UITextField *entryTitleTextField;
 
 @end
 

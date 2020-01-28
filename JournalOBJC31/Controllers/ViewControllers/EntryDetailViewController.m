@@ -7,8 +7,10 @@
 //
 
 #import "EntryDetailViewController.h"
+#import "Entry.h"
+#import "EntryController.h"
 
-@interface EntryDetailViewController ()
+@interface EntryDetailViewController () <UITextFieldDelegate>
 
 @end
 
@@ -16,17 +18,44 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    [self updateViews];
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)setEntryLanding:(Entry *)entryLanding {
+    _entryLanding = entryLanding;
+    [self updateViews];
 }
-*/
+
+- (void)updateViews {
+    if (!self.entryLanding) return;
+    self.entryTitleTextField.text = self.entryLanding.title;
+    self.bodyTextView.text = self.entryLanding.bodyText;
+}
+
+- (IBAction)saveButtonTapped:(UIBarButtonItem *)sender {
+    if (self.entryLanding) {
+        self.entryLanding.title = self.entryTitleTextField.text;
+        self.entryLanding.bodyText = self.bodyTextView.text;
+        self.entryLanding.timestamp = [NSDate date];
+    } else {
+        
+        Entry *entry = [[Entry alloc] initWithTitle:self.entryTitleTextField.text bodyText:self.bodyTextView.text timestamp:[NSDate date]];
+        
+        [[EntryController shared] addEntriesObject:entry];
+        self.entryLanding = entry;
+    }
+    [self.navigationController popViewControllerAnimated:true];
+}
+
+- (IBAction)clearButtonTapped:(UIButton *)sender {
+    self.entryTitleTextField.text = @"";
+    self.bodyTextView.text = @"";
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    return YES;
+}
+
 
 @end
